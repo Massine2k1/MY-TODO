@@ -7,4 +7,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/post', [PostController::class, 'index'])->name('post.index');
+Route::prefix('my-todo')->group(function(){
+    Route::get('/', [PostController::class, 'index'])->name('post.index');
+    Route::get('/new',[PostController::class, 'create'])->name('post.create');
+});
+

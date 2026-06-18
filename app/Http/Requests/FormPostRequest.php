@@ -23,7 +23,14 @@ class FormPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "title"=>["required","string","max:255"],
+            "content"=>["nullable","string"],
+            "due_date"=>["nullable","date","after_or_equal:today"],
+            "slug"=>["unique:posts,slug,".$this->route('post')],
+            "completed_at"=>["nullable","date"],
+            "priority_id"=>["required","exists:priorites,id"],
+            "created_at"=>["nullable","date"],
+            "updated_at"=>["nullable","date"]
         ];
     }
 }
