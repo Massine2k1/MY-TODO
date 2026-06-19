@@ -20,11 +20,11 @@ class Post extends Model
     ];
     public function priority()
     {
-        return $this->belongsTo(Priorities::class);
+        return $this->belongsTo(Priority::class);
     }
 
     public function tags()
     {
-        return $this->belongstoMany(Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
 }

@@ -4,13 +4,13 @@
 <div class="d-flex flex-column align-items-center">
     <form class="w-50" method="post">
     <div class="form-group mb-3">
-        <label for="title">Title :</label>
+        <label for="title">Titre :</label>
         <input type="text" class="form-control" id="title" name="title">
     </div>
 
     <div class="form-group mb-3">
-        <label for="content">Content :</label>
-        <textarea class="form-control" id="content" rows="3"></textarea>
+        <label for="content">Description :</label>
+        <textarea class="form-control" id="content" rows="3" name="content"></textarea>
     </div>
 
     <div class="form-group mb-3">

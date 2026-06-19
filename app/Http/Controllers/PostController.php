@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FormPostRequest;
 use App\Models\Post;
-use App\Models\Priorities;
+use App\Models\Priority;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -12,15 +13,24 @@ class PostController extends Controller
     //
     public function index()
     {
-        return view('post.index');
+        $post = Post::with('tags','priority')->simplePaginate(10);
+        return view('post.index', compact('post'));
     }
 
     public function create()
     {
         $post = new Post();
-        $priorities = Priorities::select('id','name')->get();
+        $priorities = Priority::select('id','name')->get();
         $tags = Tag::select('id','name')->get();
 
         return view('post.create', compact('post','priorities','tags'));
+    }
+
+    public function store(FormPostRequest $request)
+    {
+        $post = Post::create($request->validated());
+        $post->tags()->sync($request->validated('tags'));
+
+        return redirect()->route('post.index')->with('success','La tâche a bien été ajouté');
     }
 }

@@ -10,5 +10,6 @@ Route::get('/', function () {
 Route::prefix('my-todo')->group(function(){
     Route::get('/', [PostController::class, 'index'])->name('post.index');
     Route::get('/new',[PostController::class, 'create'])->name('post.create');
+    Route::post('/new',[PostController::class, 'store']);
 });
 

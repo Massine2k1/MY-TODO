@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
+use Override;
 
 class FormPostRequest extends FormRequest
 {
@@ -12,7 +14,7 @@ class FormPostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,14 +25,21 @@ class FormPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title"=>["required","string","max:255"],
+            "title"=>["required","string","min:4","max:255"],
             "content"=>["nullable","string"],
             "due_date"=>["nullable","date","after_or_equal:today"],
-            "slug"=>["unique:posts,slug,".$this->route('post')],
+            "slug"=>["required","min:8","regex:/^[0-9a-z\-]+$/","unique:posts,slug,".$this->route('post')],
             "completed_at"=>["nullable","date"],
-            "priority_id"=>["required","exists:priorites,id"],
+            "priority_id"=>["required","exists:priorities,id"],
+            "tags"=>["required","exists:tags,id"],
             "created_at"=>["nullable","date"],
             "updated_at"=>["nullable","date"]
         ];
+    }
+
+    #[Override]
+    public function prepareForValidation()
+    {
+        $this->merge(['slug'=>$this->slug ?:Str::slug($this->title)]);
     }
 }
