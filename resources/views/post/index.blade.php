@@ -14,8 +14,8 @@
         <p class="card-text">{{ str($p->content)->words(5) }}</p>
       </div>
       <div>
-        <a href="#" class="btn btn-primary">Voir plus</a>
-        <a href="#" class="btn btn-success">Modifier</a>
+        <a href="{{ route('post.show', ['slug'=> $p->slug, 'post'=>$p->id ]) }}" class="btn btn-primary">Voir plus</a>
+        <a href="{{ route('post.edit',['post'=> $p->id]) }}" class="btn btn-success">Modifier</a>
       </div>
     </div>
   </div>

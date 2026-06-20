@@ -33,4 +33,27 @@ class PostController extends Controller
 
         return redirect()->route('post.index')->with('success','La tâche a bien été ajouté');
     }
+
+    public function show(Post $post, string $slug)
+    {
+        if ($post->slug !== $slug) {
+            return to_route('post.show', ['slug'=>$post->slug, 'post'=>$post->id]);
+        }
+
+        return view('post.show', compact('post'));
+    }
+
+    public function edit(Post $post)
+    {
+        $priorities = Priority::select('id','name')->get();
+        $tags = Tag::select('id','name')->get(); 
+        return view('post.create', compact('post','priorities','tags'));
+    }
+
+    public function update(FormPostRequest $request, Post $post)
+    {
+        $post->update($request->validated());
+        $post->tags()->sync($request->validated('tags'));   
+        return to_route('post.index')->with('success','Mise à jour de la tâche effectuée');
+    }
 }

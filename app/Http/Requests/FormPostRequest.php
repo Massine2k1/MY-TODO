@@ -28,7 +28,7 @@ class FormPostRequest extends FormRequest
             "title"=>["required","string","min:4","max:255"],
             "content"=>["nullable","string"],
             "due_date"=>["nullable","date","after_or_equal:today"],
-            "slug"=>["required","min:8","regex:/^[0-9a-z\-]+$/","unique:posts,slug,".$this->route('post')],
+            "slug"=>["required","min:8","regex:/^[0-9a-z\-]+$/","unique:posts,slug,".$this->route('post')?->id],
             "completed_at"=>["nullable","date"],
             "priority_id"=>["required","exists:priorities,id"],
             "tags"=>["required","exists:tags,id"],
