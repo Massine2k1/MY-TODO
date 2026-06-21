@@ -12,18 +12,30 @@
             <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="{{ route('post.index') }}">MY-TODO</a>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ route('post.index') }}">Accueil</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="{{ route('post.create') }}">Nouvelle tache</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <button class="btn btn-outline-success" type="submit">Se connecter</button>
-            </form>
+            <div class="collapse navbar-collapse d-flex align-items-center" id="navbarTogglerDemo03">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ route('post.index') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{ route('post.create') }}">Nouvelle tache</a>
+                    </li>
+                </ul>
+
+                @auth
+                <div class="text-white px-2">Connecté en tant que <a href="{{ route('auth.profile') }}">{{ Auth::user()->name }}</a></div>
+                <form action="{{ route('auth.logout') }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-outline-danger">Se déconnecter</button>
+                </form>
+                @endauth
+
+                @guest                
+                <div>
+                    <a class="btn btn-outline-success" href="{{ route('auth.login') }}">Se connecter</a>
+                </div>
+                @endguest
             </div>
         </div>
     </nav>
