@@ -13,6 +13,7 @@ Route::get('/login',[AuthController::class,'login'])->name('auth.login');
 Route::post('/login',[AuthController::class, 'doLogin']);
 Route::delete('/logout',[AuthController::class,'logout'])->name('auth.logout');
 Route::get('/profile',[ProfileController::class, 'profile'])->name('auth.profile')->middleware('auth');
+Route::put('/profile',[ProfileController::class,'update']);
 
 Route::prefix('my-todo')->group(function(){
     Route::get('/', [PostController::class, 'index'])->name('post.index');

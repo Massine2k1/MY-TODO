@@ -24,6 +24,9 @@
 
                 @auth
                 <div class="text-white px-2">Connecté en tant que <a href="{{ route('auth.profile') }}">{{ Auth::user()->name }}</a></div>
+                @if (Auth::user()->avatar)
+                    <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="avatar" class="rounded-circle object-fit-cover" style="width: 35px; height: 35px;">
+                @endif
                 <form action="{{ route('auth.logout') }}" method="post">
                     @csrf
                     @method('DELETE')
