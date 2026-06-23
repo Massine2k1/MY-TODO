@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FormPostRequest;
+use App\Http\Requests\FormProfileRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,23 +16,30 @@ class ProfileController extends Controller
         return view('auth.profile');
     }
 
-    public function update(Request $request)
+    public function extractData(User $user,FormProfileRequest $request)
     {
-        $request->validate(["avatar"=>["nullable","image","max:2000"]]);
+        $data = $request->validated();
+        $avatar = $request->validated('avatar');
 
-        $user = Auth::user();
+        if ($avatar==null || $avatar->getError()) {
+            return $data;
+        }
 
-        if ($request->hasFile('avatar')) {
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
-            }
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
+        }
 
-            $path = $request->file('avatar')->store('avatars','public');
-            $user->avatar = $path;
-            }
-        $user->save();
-
-        return to_route('auth.profile')->with('success','Avatar mis à jour!');
-
+        $data['avatar'] = $avatar->store('avatars','public');
+        return $data;
     }
+
+    public function update(FormProfileRequest $request)
+    {
+        $user = Auth::user();
+        $ProfileRequest = $this->extractData($user, $request);
+        $user->update($ProfileRequest);
+
+        return to_route('auth.profile')->with('success','Profil mis à jour avec succès !');
+    }
+
 }
